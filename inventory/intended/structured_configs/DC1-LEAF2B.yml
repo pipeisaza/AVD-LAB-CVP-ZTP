@@ -210,8 +210,9 @@ daemon_terminattr:
   cvaddrs:
   - 10.31.100.4:9910
   cvauth:
-    method: key
-    key: ''
+    method: token
+    key: null
+    token_file: tmp/token
   cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent

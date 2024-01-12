@@ -43,3 +43,9 @@ custom_structured_configuration_ntp:
     vrf: MGMT
   - name: 1.fr.pool.ntp.org
     vrf: MGMT
+
+custom_structured_configuration_daemon_terminattr:
+  cvauth:
+    method: token 
+    key: null 
+    token_file: "tmp/token"
