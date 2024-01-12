@@ -17,10 +17,10 @@ router_bgp:
       type: evpn
       update_source: Loopback0
       bfd: true
-      ebgp_multihop: '3'
       password: q+VNViP5i4rVjW1cxFv2wA==
       send_community: all
       maximum_routes: 0
+      ebgp_multihop: 3
       next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
@@ -71,14 +71,15 @@ router_bgp:
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
-  gateway: 10.255.0.1
+  gateway: 10.31.100.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
   cvaddrs:
-  - 10.255.0.1:9910
+  - 10.31.100.4:9910
   cvauth:
     method: key
+    key: ''
   cvvrf: MGMT
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
@@ -117,8 +118,8 @@ management_interfaces:
     description: oob_management
     shutdown: false
     vrf: MGMT
-    ip_address: 10.255.0.12/24
-    gateway: 10.255.0.1
+    ip_address: 10.31.100.112/24
+    gateway: 10.31.100.1
     type: oob
 management_api_http:
   enable_vrfs:
@@ -130,36 +131,36 @@ ethernet_interfaces:
     peer_interface: Ethernet2
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF1A_Ethernet2
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.2/31
   Ethernet2:
     peer: DC1-LEAF1B
     peer_interface: Ethernet2
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF1B_Ethernet2
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.6/31
   Ethernet3:
     peer: DC1-LEAF2A
     peer_interface: Ethernet2
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF2A_Ethernet2
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.10/31
   Ethernet4:
     peer: DC1-LEAF2B
     peer_interface: Ethernet2
     peer_type: l3leaf
     description: P2P_LINK_TO_DC1-LEAF2B_Ethernet2
+    shutdown: false
     mtu: 1500
     type: routed
-    shutdown: false
     ip_address: 172.31.255.14/31
 loopback_interfaces:
   Loopback0:
