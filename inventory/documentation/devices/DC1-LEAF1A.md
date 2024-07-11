@@ -295,6 +295,7 @@ vlan internal order ascending range 1006 1199
 | 150 | Tenant_A_WAN_Zone_1 | - |
 | 160 | Tenant_A_VMOTION | - |
 | 161 | Tenant_A_NFS | - |
+| 200 | Tenant_A_TEST_VLAN200 | - |
 | 3009 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3 |
 | 3010 | MLAG_iBGP_Tenant_A_WEB_Zone | LEAF_PEER_L3 |
 | 3011 | MLAG_iBGP_Tenant_A_APP_Zone | LEAF_PEER_L3 |
@@ -342,6 +343,9 @@ vlan 160
 !
 vlan 161
    name Tenant_A_NFS
+!
+vlan 200
+   name Tenant_A_TEST_VLAN200
 !
 vlan 3009
    name MLAG_iBGP_Tenant_A_OP_Zone
@@ -682,6 +686,7 @@ interface Vlan4094
 | 150 | 10150 | - | - |
 | 160 | 55160 | - | - |
 | 161 | 10161 | - | - |
+| 200 | 10200 | - | - |
 
 #### VRF to VNI and Multicast Group Mappings
 
@@ -714,6 +719,7 @@ interface Vxlan1
    vxlan vlan 150 vni 10150
    vxlan vlan 160 vni 55160
    vxlan vlan 161 vni 10161
+   vxlan vlan 200 vni 10200
    vxlan vrf Tenant_A_APP_Zone vni 12
    vxlan vrf Tenant_A_DB_Zone vni 13
    vxlan vrf Tenant_A_OP_Zone vni 10
@@ -877,6 +883,7 @@ ip route vrf MGMT 0.0.0.0/0 10.31.100.1
 | Tenant_A_DB_Zone | 192.168.255.3:13 | 13:13 | - | - | learned | 140-141 |
 | Tenant_A_NFS | 192.168.255.3:10161 | 10161:10161 | - | - | learned | 161 |
 | Tenant_A_OP_Zone | 192.168.255.3:10 | 10:10 | - | - | learned | 110-112 |
+| Tenant_A_TEST_VLAN200 | 192.168.255.3:10200 | 10200:10200 | - | - | learned | 200 |
 | Tenant_A_VMOTION | 192.168.255.3:55160 | 55160:55160 | - | - | learned | 160 |
 | Tenant_A_WAN_Zone | 192.168.255.3:14 | 14:14 | - | - | learned | 150 |
 | Tenant_A_WEB_Zone | 192.168.255.3:11 | 11:11 | - | - | learned | 120-121 |
@@ -960,6 +967,12 @@ router bgp 65101
       route-target both 10:10
       redistribute learned
       vlan 110-112
+   !
+   vlan-aware-bundle Tenant_A_TEST_VLAN200
+      rd 192.168.255.3:10200
+      route-target both 10200:10200
+      redistribute learned
+      vlan 200
    !
    vlan-aware-bundle Tenant_A_VMOTION
       rd 192.168.255.3:55160

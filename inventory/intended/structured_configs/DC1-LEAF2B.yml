@@ -191,6 +191,15 @@ router_bgp:
       redistribute_routes:
       - learned
       vlan: '161'
+    Tenant_A_TEST_VLAN200:
+      tenant: Tenant_A
+      rd: 192.168.255.6:10200
+      route_targets:
+        both:
+        - 10200:10200
+      redistribute_routes:
+      - learned
+      vlan: '200'
     Tenant_A_VMOTION:
       tenant: Tenant_A
       rd: 192.168.255.6:55160
@@ -353,6 +362,9 @@ vlans:
   161:
     tenant: Tenant_A
     name: Tenant_A_NFS
+  200:
+    tenant: Tenant_A
+    name: Tenant_A_TEST_VLAN200
 vlan_interfaces:
   Vlan4093:
     description: MLAG_PEER_L3_PEERING
@@ -628,6 +640,8 @@ vxlan_interface:
           vni: 55160
         161:
           vni: 10161
+        200:
+          vni: 10200
       vrfs:
         Tenant_A_APP_Zone:
           vni: 12
