@@ -10,6 +10,7 @@
   - [Local Users](#local-users)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
+  - [SFlow](#sflow)
 - [MLAG](#mlag)
   - [MLAG Summary](#mlag-summary)
   - [MLAG Device Configuration](#mlag-device-configuration)
@@ -158,6 +159,7 @@ management api http-commands
 | ---- | --------- | ---- | -------- |
 | admin | 15 | network-admin | False |
 | ansible | 15 | network-admin | False |
+| carlos1 | 15 | network-admin | False |
 | cvpadmin | 15 | network-admin | False |
 
 ### Local Users Device Configuration
@@ -166,6 +168,7 @@ management api http-commands
 !
 username admin privilege 15 role network-admin secret sha512 $6$Df86J4/SFMDE3/1K$Hef4KstdoxNDaami37cBquTWOTplC.miMPjXVgQxMe92.e5wxlnXOLlebgPj8Fz1KO0za/RCO7ZIs4Q6Eiq1g1
 username ansible privilege 15 role network-admin secret sha512 $6$Dzu11L7yp9j3nCM9$FSptxMPyIL555OMO.ldnjDXgwZmrfMYwHSr0uznE5Qoqvd9a6UdjiFcJUhGLtvXVZR1r.A/iF5aAt50hf/EK4/
+username carlos1 privilege 15 role network-admin secret sha512 $6$Dzu11L7yp9j3nCM9$FSptxMPyIL555OMO.ldnjDXgwZmrfMYwHSr0uznE5Qoqvd9a6UdjiFcJUhGLtvXVZR1r.A/iF5aAt50hf/EK4/
 username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
 ```
 
@@ -186,6 +189,29 @@ username cvpadmin privilege 15 role network-admin secret sha512 $6$rZKcbIZ7iWGAW
 daemon TerminAttr
    exec /usr/bin/TerminAttr -cvaddr=10.31.100.4:9910 -cvauth=token,tmp/token -cvvrf=MGMT -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
+```
+
+## SFlow
+
+### SFlow Summary
+
+| VRF | SFlow Source | SFlow Destination | Port |
+| --- | ------------ | ----------------- | ---- |
+| default | - | 127.0.0.1 | 6343 |
+| default | loopback0 | - | - |
+
+sFlow Sample Rate: 300000
+
+sFlow is enabled.
+
+### SFlow Device Configuration
+
+```eos
+!
+sflow sample 300000
+sflow destination 127.0.0.1
+sflow source-interface loopback0
+sflow run
 ```
 
 # MLAG
@@ -358,6 +384,7 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet3 | MLAG_PEER_DC1-LEAF2A_Ethernet3 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
 | Ethernet4 | MLAG_PEER_DC1-LEAF2A_Ethernet4 | *trunk | *2-4094 | *- | *['LEAF_PEER_L3', 'MLAG'] | 3 |
+| Ethernet5 |  VPC8_LAN | access | 110 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -395,6 +422,15 @@ interface Ethernet4
    description MLAG_PEER_DC1-LEAF2A_Ethernet4
    no shutdown
    channel-group 3 mode active
+!
+interface Ethernet5
+   description VPC8_LAN
+   no shutdown
+   switchport access vlan 110
+   switchport mode access
+   switchport
+   spanning-tree portfast
+   spanning-tree bpduguard enable
 ```
 
 ## Port-Channel Interfaces

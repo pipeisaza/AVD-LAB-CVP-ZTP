@@ -1,7 +1,7 @@
 ---
 ztp:
   default:
-    registration: 'http://10.31.100.1/ztp/bootstrap'
+    registration: 'http://10.31.100.4/ztp/bootstrap'
     gateway: 10.31.100.3
     nameservers:
       - '10.31.100.3'

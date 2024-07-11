@@ -243,6 +243,10 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: $6$Dzu11L7yp9j3nCM9$FSptxMPyIL555OMO.ldnjDXgwZmrfMYwHSr0uznE5Qoqvd9a6UdjiFcJUhGLtvXVZR1r.A/iF5aAt50hf/EK4/
+  carlos1:
+    privilege: 15
+    role: network-admin
+    sha512_password: $6$Dzu11L7yp9j3nCM9$FSptxMPyIL555OMO.ldnjDXgwZmrfMYwHSr0uznE5Qoqvd9a6UdjiFcJUhGLtvXVZR1r.A/iF5aAt50hf/EK4/
   cvpadmin:
     privilege: 15
     role: network-admin
@@ -531,15 +535,6 @@ ethernet_interfaces:
     mtu: 1500
     type: routed
     ip_address: 172.31.255.11/31
-  Ethernet5:
-    peer: server02
-    peer_interface: Eth0
-    peer_type: server
-    description: server02_Eth0
-    type: switched
-    shutdown: false
-    mode: access
-    vlans: '110'
 mlag_configuration:
   domain_id: DC1_LEAF2
   local_interface: Vlan4094
